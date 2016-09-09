@@ -1,0 +1,509 @@
+<?xml version="1.0" ?>
+
+<!-- Robot Description format of custom 6DOF Yeti CLARM (Yeti Clamsy Arm) arm
+	 Anna Safonov - anna.safonov@uoit.net
+	 28/06/2016
+
+
+Documentation:
+
+URDF
+http://www.ros.org/wiki/urdf/XML
+
+
+XARCO - Macro Language
+http://www.ros.org/wiki/xacro
+
+-->
+
+
+<robot name = "clarm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- Include materials -->
+<xacro:include filename="$(find clarm_description)/urdf/materials.urdf.xacro" />
+
+<!-- Constants -->
+<property name="M_SCALE" value="0.001 0.001 0.001"/>
+<property name="M_PI" value="3.14159"/> 
+
+<!-- BASE LINK -->
+<link name = "base_link">
+	<inertial>
+ 		<origin xyz="0 0 0"/>
+ 		<mass value="1.0"/>
+ 		<inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+    				 iyy="100.0" iyz="0.0" 
+     				 izz="1.0"/>
+ 	</inertial>
+  <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/base_link.stl" scale = "${M_SCALE}"/>  
+    </geometry>
+		<material name = "Grey"/>
+  </visual>
+  <collision>
+ 		<origin rpy="0 0 0" xyz="0 0 0"/>
+ 		<geometry>
+ 			<mesh filename="package://clarm_description/meshes/base_link.stl" scale = "${M_SCALE}"/>
+ 		</geometry>
+ 	</collision>
+</link>
+
+<gazebo reference="base_link">
+ 	<material>Gazebo/Grey</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- SHOULDER PAN JOINT -->
+<joint name = "shoulder_pan_joint" type = "revolute">
+	<parent link="base_link" />
+	<child link="shoulder_pan_link"/>
+	<origin rpy="0 -${M_PI/2} 0" xyz="0 0.055 0.06"/>
+	<axis xyz="1 0 0" />
+	<limit effort="300" lower="-2.61799387799" upper="1.98394848567" velocity="1"/>
+	<dynamics damping="50" friction="1"/>
+</joint>
+
+ <!-- SHOULDER PAN LINK -->
+<link name = "shoulder_pan_link">
+	<inertial>
+    <origin xyz="0 0 0"/>
+    <mass value="1.0"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+       			 iyy="100.0" iyz="0.0" 
+     				 izz="1.0"/>
+	</inertial>
+  <visual>
+	  <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+	   	<mesh filename="package://clarm_description/meshes/shoulder_pan_link.stl" scale = "${M_SCALE}"/>
+    </geometry>
+		<material name = "Orange"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/shoulder_pan_link.stl" scale = "${M_SCALE}"/>
+    </geometry>
+  </collision>
+</link>
+
+<gazebo reference="shoulder_pan_link">
+ 	<material>Gazebo/Orange</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- SHOULDER PITCH JOINT -->
+<joint name="shoulder_pitch_joint" type="revolute">
+	<parent link="shoulder_pan_link" />	
+	<child link="shoulder_pitch_link"/>
+	<origin rpy="0 0 0" xyz="0.0235 -0.0065 0.031"/> 
+	<axis xyz="0 0 1" />
+	<limit effort="300" lower="-1.19962513147" upper="1.55" velocity="1"/>
+	<dynamics damping="50" friction="1"/>
+</joint>
+
+ <!-- SHOULDER PITCH LINK -->
+<link name = "shoulder_pitch_link">
+	<inertial>
+    <origin xyz="0 0 0"/>
+    <mass value="1.0"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+     				 iyy="100.0" iyz="0.0" 
+     				 izz="1.0"/>
+		</inertial>
+	<visual>
+	  <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/shoulder_pitch_link.stl" scale = "${M_SCALE}"/>
+    </geometry>
+		<material name = "Grey"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/shoulder_pitch_link.stl" scale = "${M_SCALE}"/>
+    </geometry>
+  </collision>
+</link>
+
+<gazebo reference="shoulder_pitch_link">
+ 	<material>Gazebo/Grey</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- ELBOW PITCH JOINT -->
+<joint name="elbow_pitch_joint" type="revolute">
+	<parent link="shoulder_pitch_link"/>
+	<child link="elbow_pitch_link"/>
+	<origin rpy = "0 ${M_PI/2} 0" xyz = "0.136 0.0335 -0.002"/>
+	<axis xyz="1 0 0" />
+	<limit effort="300" lower="-1.5953400194" upper="0" velocity="1"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+ <!-- ELBOW PITCH LINK -->
+<link name = "elbow_pitch_link">
+	<inertial>
+    <origin xyz="0 0 0"/>
+    <mass value="1.0"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+    				 iyy="100.0" iyz="0.0" 
+     				 izz="1.0"/>
+  </inertial>
+	<visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/elbow_pitch_link.stl" scale = "${M_SCALE}"/>
+    </geometry>
+		<material name = "Orange"/>
+  </visual>
+  <collision>
+   	<origin rpy="0 0 0" xyz="0 0 0"/>
+   	<geometry>
+   		<mesh filename="package://clarm_description/meshes/elbow_pitch_link.stl" scale = "${M_SCALE}"/>
+   	</geometry>
+  </collision>
+</link>
+
+<gazebo reference="elbow_pitch_link">
+ 	<material>Gazebo/Orange</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- ELBOW ROLL JOINT -->
+<joint name="elbow_roll_joint" type="revolute">
+	<parent link="elbow_pitch_link"/>
+	<child link="elbow_roll_link"/>
+	<origin rpy = "${M_PI/2} 0 -1.57" xyz = "0.025 0.015 0.065"/>
+	<axis xyz="0 1 0" />
+	<limit effort="300" lower="-2.61799387799" upper="0.705631162427" velocity="1"/>
+	<dynamics damping="50" friction="1"/>
+</joint>
+
+ <!-- ELBOW ROLL LINK -->
+<link name = "elbow_roll_link">
+	<inertial>
+   	<origin xyz="0 0 0"/>
+   	<mass value="1.0"/>
+   	<inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+     			 	 iyy="100.0" iyz="0.0" 
+     			 	 izz="1.0"/>
+	</inertial>
+  <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/elbow_roll_link.stl" scale = "${M_SCALE}"/>
+    </geometry>
+	  <material name = "Grey"/>
+  </visual>
+  <collision>
+   	<origin rpy="0 0 0" xyz="0 0 0"/>
+   	<geometry>
+   		<mesh filename="package://clarm_description/meshes/elbow_roll_link.stl" scale = "${M_SCALE}"/>
+   	</geometry>
+  </collision>
+</link>
+
+<gazebo reference="elbow_roll_link">
+ 	<material>Gazebo/Grey</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- WRIST PITCH JOINT -->
+<joint name="wrist_pitch_joint" type="revolute">
+	<parent link="elbow_roll_link"/>
+	<child link="wrist_pitch_link"/>
+	<origin rpy = "0 ${M_PI/2} ${M_PI/2}" xyz = "0 0.042 -0.025"/>
+	<axis xyz="1 0 0" />
+	<limit effort="300" lower="-1.5953400194" upper="1.98394848567" velocity="1"/>
+	<dynamics damping="50" friction="1"/>
+</joint>
+
+ <!-- WRIST PITCH LINK -->
+<link name = "wrist_pitch_link">
+	<inertial>
+   	<origin xyz="0 0 0"/>
+   	<mass value="1.0"/>
+    <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+     				 iyy="100.0" iyz="0.0" 
+     				 izz="1.0"/>
+	</inertial>
+  <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/wrist_pitch_link.stl" scale = "${M_SCALE}"/>
+    <geometry>
+  	<material name = "Orange"/>
+  </visual>
+  <collision>
+  	<origin rpy="0 0 0" xyz="0 0 0"/>
+   	<geometry>
+   		<mesh filename="package://clarm_description/meshes/wrist_pitch_link.stl" scale = "${M_SCALE}"/>
+   	</geometry>
+  </collision>
+</link>
+
+<gazebo reference="wrist_pitch_link">
+ 	<material>Gazebo/Orange</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- WRIST ROLL JOINT -->
+<joint name="wrist_roll_joint" type="revolute">
+	<parent link="wrist_pitch_link"/>
+	<child link="wrist_roll_link" />
+	<origin rpy = "0 0 ${M_PI}" xyz = "-0.0245 0.02 0.065"/>
+  <axis xyz="0 0 1" />
+	<limit effort="300" lower="-2.61799387799" upper="2.6128806087" velocity="1"/>
+	<dynamics damping="50" friction="1"/>
+</joint>
+
+ <!-- WRIST ROLL LINK -->
+<link name = "wrist_roll_link">
+	<inertial>
+ 		<origin xyz="0 0 0"/>
+ 		<mass value="1.0"/>
+ 		<inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+     				 iyy="100.0" iyz="0.0" 
+     				 izz="1.0"/>
+  </inertial>
+  <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+    <geometry>
+      <mesh filename="package://clarm_description/meshes/wrist-roll.stl" scale = "${M_SCALE}"/>
+    </geometry>
+   	<material name = "Grey"/>
+  </visual>
+  <collision>
+   	<origin rpy="0 0 0" xyz="0 0 0"/>
+   	<geometry>
+   		<mesh filename="package://clarm_description/meshes/wrist-roll.stl" scale = "${M_SCALE}"/>
+   	</geometry>
+  </collision>
+</link>
+
+<gazebo reference="wrist_roll_link">
+ 	<material>Gazebo/Grey</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- GRIPPER BASE JOINT -->
+<joint name="gripper_base_joint" type="fixed">
+ 	<parent link="wrist_roll_link"/>
+ 	<child link="gripper_finger_base_link"/>
+ 	<origin rpy="${M_PI/2} -${M_PI/2} ${M_PI/2}" xyz="0.015  0.02 0.022"/>
+</joint>
+
+ <!-- GRIPPER FINGER BASE LINK -->
+<link name="gripper_finger_base_link">
+ 	<inertial>
+ 		<mass value="0.00001"/>
+ 		<origin xyz="0 0 0"/>
+ 		<inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+    				 iyy="1.0" iyz="0.0" 
+     				 izz="1.0"/>
+ 	</inertial>
+ 	<visual>
+	  <origin rpy="${M_PI} -${M_PI/2} ${M_PI/2}" xyz="0.016 0 -.015 "/>
+	  <geometry>
+		  <mesh filename="package://clarm_description/meshes/pincher_finger_base.stl" scale=".01 .01 .01"/>
+	  </geometry>
+  	<material name="Orange"/>
+ 	</visual>
+   	<collision>
+   		<origin rpy="0 0 0" xyz="0.015 0 -0.0135"/>
+   		<geometry>
+     		<box size="0.002 0.040 0.075"/>
+   		</geometry>
+   	</collision>
+</link>
+
+<gazebo reference="gripper_finger_base_link">
+ 	<material>Gazebo/Orange</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- GRIPPER JOINT -->
+<joint name="gripper_joint" type="prismatic">
+	<origin rpy="${M_PI/2} 0 0" xyz="0.01 0.02 0.019"/>
+ 	<axis xyz="1 0 0"/>
+	<limit effort="30" lower="0.002" upper="0.031" velocity="0.5"/>
+ 	<parent link="wrist_roll_link"/>
+ 	<child link="gripper_active_link"/>
+</joint>
+
+ <!-- GRIPPER ACTIVE LINK -->
+<link name="gripper_active_link">
+ 	<inertial>
+ 		<mass value="0.00001"/>
+ 		<origin xyz="0 0 0"/>
+ 		<inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+     				 iyy="1.0" iyz="0.0" 
+     				 izz="1.0"/>
+  	</inertial>
+   	<visual>
+   		<origin rpy="-${M_PI/2} 0 0" xyz="-0.02 0.023 0"/>
+   		<geometry>
+   			<mesh filename="package://clarm_description/meshes/pincher_finger.stl" scale=".01 .01 .01"/>
+   		</geometry>
+   		<material name="Orange"/>
+   	</visual>
+   	<collision>
+   		<origin rpy="-${M_PI/2} 0 0" xyz="-0.02 0.023 0"/>
+     		<geometry>
+     			<box size="0.036 0.028 0.004"/>
+    		</geometry>
+   	</collision>
+</link>
+
+<gazebo reference="gripper_active_link">
+ 	<material>Gazebo/Orange</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+ <!-- GRIPPER2 JOINT -->
+<joint name="gripper2_joint" type="fixed">
+	<origin rpy="${M_PI/2} 0 0" xyz="0.01 0.02 0.019"/>
+ 	<parent link="wrist_roll_link"/>
+ 	<child link="gripper_active2_link"/>
+</joint>
+
+ <!-- GRIPPER ACTIVE2 LINK -->
+<link name="gripper_active2_link">
+ 	<inertial>
+ 		<mass value="0.00001"/>
+ 		<origin xyz="0 0 0"/>
+   	<inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+      			 iyy="1.0" iyz="0.0" 
+      			 izz="1.0"/>
+ 	</inertial>
+ 	<visual>
+ 		<origin rpy="-${M_PI/2} ${M_PI} 0" xyz="-0.02 0.023 0"/>
+ 		<geometry>
+ 			<mesh filename="package://clarm_description/meshes/pincher_finger.stl" scale=".01 .01 .01"/>
+ 		</geometry>
+		<material name="Orange"/>
+ 	</visual>
+ 	<collision>
+ 		<origin rpy="-${M_PI/2} ${M_PI} 0" xyz="-0.02 0.023 0"/>
+ 		<geometry>
+ 			<box size="0.036 0.028 0.004"/>
+ 		</geometry>
+ 	</collision>
+</link>
+
+<gazebo reference="gripper_active2_link">
+ 	<material>Gazebo/Orange</material>
+ 	<selfCollide>true</selfCollide>
+ 	<gravity>true</gravity>
+</gazebo>
+
+<!-- Transmissions for ROS Control -->
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="shoulder_pan_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="shoulder_pitch_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="elbow_pitch_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="elbow_roll_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_pitch_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_roll_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="gripper_roll_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="gripper_base_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/clam</robotNamespace>
+    </plugin>
+</gazebo>
+
+</robot>
+

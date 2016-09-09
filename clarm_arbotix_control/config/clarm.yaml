@@ -1,0 +1,30 @@
+port: /dev/ttyUSB0
+baud: 115200
+read_rate: 15
+write_rate: 25
+
+
+joints: {
+    shoulder_pan_joint: {id: 1, ticks: 1024, neutral: 512, max_speed: 10, min_angle: -150, max_angle: 150, invert: False},
+    shoulder_pitch_joint: {id: 2, ticks: 4096, neutral: 2048, max_speed: 10, min_angle: -150, max_angle: 150, invert: True},
+    elbow_pitch_joint: {id: 3, ticks: 4096, neutral: 2048, max_speed: 10, min_angle: -150, max_angle: 150, invert: False},
+    elbow_roll_joint: {id: 4, ticks: 1024, neutral: 512, max_speed: 10, min_angle: -150, max_angle: 150,invert: False},
+    wrist_pitch_joint: {id: 5, ticks: 1024, neutral: 512, max_speed: 10, min_angle: -110, max_angle: 110,invert: False},
+    wrist_roll_joint: {id: 6, ticks: 1024, neutral: 512, max_speed: 10, min_angle: -150, max_angle: 150, invert: False},
+    gripper_joint: {id: 7, ticks: 1024, neutral: 512, max_speed: 10, min_angle: -60, max_angle: 50, invert: False}
+}
+
+
+controllers: {
+   clarm_controller: {action_name: clarm_controller/follow_joint_trajectory,
+                      type: follow_controller,
+                      joints: [shoulder_pan_joint, 
+                               shoulder_pitch_joint, 
+                               elbow_pitch_joint, 
+                               elbow_roll_joint, 
+                               wrist_pitch_joint, 
+                               wrist_roll_joint]}, 
+   gripper_controller: {action_name: gripper_controller/follow_joint_trajectory, 
+                        type: follow_controller, 
+                        joints: [gripper_joint]}
+}

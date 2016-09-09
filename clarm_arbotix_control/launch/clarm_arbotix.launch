@@ -1,0 +1,7 @@
+<launch>
+
+  <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
+      <rosparam file="$(find clarm_arbotix_control)/config/clarm.yaml" command="load" />
+  </node>
+
+</launch>

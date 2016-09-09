@@ -1,0 +1,5 @@
+controller_list:
+  - name: ""
+    action_ns: joint_trajectory_action
+    type: FollowJointTrajectory
+    joints: [shoulder_pan_joint, shoulder_pitch_joint, elbow_pitch_joint, elbow_roll_joint, wrist_pitch_joint, wrist_roll_joint, gripper_base_joint, gripper_joint, gripper2_joint]

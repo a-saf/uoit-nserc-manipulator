@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+<robot name = "clam">
+	<material name = "Grey">
+	    <color rgba = "0.4 0.4 0.4 1.0"/>
+	</material>
+
+	<material name="Black">
+    	    <color rgba="0.0 0.0 0.0 1.0"/>
+  	</material>
+
+  	<material name="Blue">
+            <color rgba="0.0 0.0 0.8 1.0"/>
+  	</material>
+
+  	<material name="Green">
+            <color rgba="0.0 0.8 0.0 1.0"/>
+	</material>
+
+	<material name="Orange">
+            <color rgba="0.65 0.42 0.07 1.0"/>
+	</material>
+
+	<material name="Red">
+            <color rgba="0.8 0.0 0.0 1.0"/>
+ 	</material>
+
+	<material name="White">
+            <color rgba="1.0 1.0 1.0 1.0"/>
+	</material>
+
+
+	<link name = "base_link">
+             <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+                <geometry>
+                   <mesh filename="package://clam_stl/L1.stl" scale = "0.001 0.001 0.001"/>  
+                </geometry>
+		<material name = "Grey"/>
+             </visual>
+	</link>
+
+	<link name = "shoulder_pan_link">
+	     <visual>
+		<origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+		   <mesh filename="package://clam_stl/L2.stl" scale = "0.001 0.001 0.001"/>
+                </geometry>
+		<material name = "Orange"/>
+             </visual>
+        </link>
+
+	<link name = "shoulder_pitch_link">
+	     <visual>
+		<origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://clam_stl/L3.stl" scale = "0.001 0.001 0.001"/>
+                </geometry>
+		<material name = "Grey"/>
+             </visual>
+        </link>
+
+	<link name = "elbow_pitch_link">
+	     <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+                <geometry>
+                    <mesh filename="package://clam_stl/L4.stl" scale = "0.001 0.001 0.001"/>
+                </geometry>
+		<material name = "Orange"/>
+             </visual>
+        </link>
+
+	<link name = "elbow_roll_link">
+             <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+                <geometry>
+                    <mesh filename="package://clam_stl/L5.stl" scale = "0.001 0.001 0.001"/>
+                </geometry>
+		<material name = "Grey"/>
+             </visual>
+        </link>
+
+	<link name = "wrist_pitch_link">
+             <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+                <geometry>
+                    <mesh filename="package://clam_stl/L6.stl" scale = "0.001 0.001 0.001"/>
+                </geometry>
+		<material name = "Orange"/>
+             </visual>
+        </link>
+
+	<link name = "wrist_roll_link">
+             <visual>
+		<origin rpy = "0 0 0" xyz = "0 0 0"/>
+                <geometry>
+                    <mesh filename="package://clam_stl/L7.stl" scale = "0.001 0.001 0.001"/>
+                </geometry>
+		<material name = "Grey"/>
+             </visual>
+        </link>
+
+	<link name = "gripper_link">
+             <visual>
+                <geometry>
+
+                </geometry>
+		<material name = "Orange"/>
+             </visual>
+        </link>
+
+
+
+  <joint name = "shoulder_pan_joint" type = "continuous">
+	<parent link="base_link" />
+	<child link="shoulder_pan_link"/>
+	<origin rpy="0 -1.57 0" xyz="0 0.055 0.06"/>
+	<axis xyz="1 0 0" />
+  </joint>
+
+
+  <joint name="shoulder_pitch_joint" type="continuous">
+	<parent link="shoulder_pan_link" />	
+	<child link="shoulder_pitch_link"/>
+	<origin rpy="0 0 0" xyz="0.0235 -0.0065 0.031"/> 
+	<axis xyz="0 0 1" />
+  </joint>
+
+
+  <joint name="elbow_pitch_joint" type="continuous">
+	<parent link="shoulder_pitch_link"/>
+	<child link="elbow_pitch_link"/>
+	<origin rpy = "0 1.57 0" xyz = "0.136 0.0335 -0.002"/>
+	<axis xyz="1 0 0" />
+  </joint>
+
+
+  <joint name="elbow_roll_joint" type="continuous">
+	<parent link="elbow_pitch_link"/>
+	<child link="elbow_roll_link"/>
+	<origin rpy = "1.57 0 -1.57" xyz = "0.025 0.015 0.065"/>
+	<axis xyz="0 1 0" />
+  </joint>
+
+
+  <joint name="wrist_pitch_joint" type="continuous">
+	<parent link="elbow_roll_link"/>
+	<child link="wrist_pitch_link"/>
+	<origin rpy = "0 1.57 1.57" xyz = "0 0.042 -0.025"/>
+	<axis xyz="1 0 0" />
+  </joint>
+
+  <joint name="wrist_roll_joint" type="continuous">
+	<parent link="wrist_pitch_link"/>
+	<child link="wrist_roll_link" />
+	<origin rpy = "0 0 3.14" xyz = "-0.0245 0.02 0.065"/>
+	<axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="gripper_joint" type="continuous">
+	<parent link="wrist_roll_link"/>
+	<child link="gripper_link" />
+	<origin xyz="0 0 0" rpy="0 0 0" />
+	<axis xyz="0 0 0" />
+  </joint>
+
+</robot>
+
